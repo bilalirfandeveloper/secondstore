@@ -1,4 +1,6 @@
 // src/components/AnnouncementBar.jsx
+import { NavLink } from '@remix-run/react';
+
 function AnnouncementBar({ settings, isLoggedIn, cart }) {
   return (
     <div className={`announcement-bar color-${settings.color_scheme} gradient`} role="region" aria-label="Announcement">
@@ -79,4 +81,3 @@ function CartLink({ cart }) {
 }
 
 export default AnnouncementBar;
-
