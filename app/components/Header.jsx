@@ -9,6 +9,22 @@ import {useAside} from '~/components/Aside';
 export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   const {shop, menu} = header;
   return (
+
+     <header className="header">
+      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
+        <strong>{shop.name}</strong>
+      </NavLink>
+      
+<HeaderMenu
+        menu={menu}
+        viewport="desktop"
+        primaryDomainUrl={header.shop.primaryDomain.url}
+        publicStoreDomain={publicStoreDomain}
+      />
+      
+      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+    </header>
+
      );
 }
 
