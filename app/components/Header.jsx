@@ -14,7 +14,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
         <strong>{shop.name}</strong>
       </NavLink>
       <HeaderMenu
-        menu={main-menu-1}
+        menu={menu}
         viewport="desktop"
         primaryDomainUrl={header.shop.primaryDomain.url}
         publicStoreDomain={publicStoreDomain}
