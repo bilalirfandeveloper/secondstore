@@ -1,10 +1,13 @@
-// src/components/Header.jsx
-import { Suspense } from 'react';
-import { Await, NavLink } from '@remix-run/react';
-import { useAside } from '~/components/Aside';
+import {Suspense} from 'react';
+import {Await, NavLink} from '@remix-run/react';
+import {useAnalytics} from '@shopify/hydrogen';
+import {useAside} from '~/components/Aside';
 
-export function Header({ header, isLoggedIn, cart, publicStoreDomain }) {
-  const { shop, menu } = header;
+/**
+ * @param {HeaderProps}
+ */
+export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
+  const {shop, menu} = header;
   return (
     <header className="header">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
@@ -16,12 +19,27 @@ export function Header({ header, isLoggedIn, cart, publicStoreDomain }) {
         primaryDomainUrl={header.shop.primaryDomain.url}
         publicStoreDomain={publicStoreDomain}
       />
+
+      
       <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
     </header>
   );
 }
 
-function HeaderMenu({ menu, primaryDomainUrl, viewport, publicStoreDomain }) {
+/**
+ * @param {{
+ *   menu: HeaderProps['header']['menu'];
+ *   primaryDomainUrl: HeaderProps['header']['shop']['primaryDomain']['url'];
+ *   viewport: Viewport;
+ *   publicStoreDomain: HeaderProps['publicStoreDomain'];
+ * }}
+ */
+export function HeaderMenu({
+  menu,
+  primaryDomainUrl,
+  viewport,
+  publicStoreDomain,
+}) {
   const className = `header-menu-${viewport}`;
 
   function closeAside(event) {
@@ -47,6 +65,7 @@ function HeaderMenu({ menu, primaryDomainUrl, viewport, publicStoreDomain }) {
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 
+        // if the url is internal, we strip the domain
         const url =
           item.url.includes('myshopify.com') ||
           item.url.includes(publicStoreDomain) ||
@@ -71,7 +90,10 @@ function HeaderMenu({ menu, primaryDomainUrl, viewport, publicStoreDomain }) {
   );
 }
 
-function HeaderCtas({ isLoggedIn, cart }) {
+/**
+ * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
+ */
+function HeaderCtas({isLoggedIn, cart}) {
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
@@ -89,7 +111,7 @@ function HeaderCtas({ isLoggedIn, cart }) {
 }
 
 function HeaderMenuMobileToggle() {
-  const { open } = useAside();
+  const {open} = useAside();
   return (
     <button
       className="header-menu-mobile-toggle reset"
@@ -101,7 +123,7 @@ function HeaderMenuMobileToggle() {
 }
 
 function SearchToggle() {
-  const { open } = useAside();
+  const {open} = useAside();
   return (
     <button className="reset" onClick={() => open('search')}>
       Search
@@ -109,14 +131,25 @@ function SearchToggle() {
   );
 }
 
-function CartBadge({ count }) {
-  const { open } = useAside();
+/**
+ * @param {{count: number | null}}
+ */
+function CartBadge({count}) {
+  const {open} = useAside();
+  const {publish, shop, cart, prevCart} = useAnalytics();
+
   return (
     <a
       href="/cart"
       onClick={(e) => {
         e.preventDefault();
         open('cart');
+        publish('cart_viewed', {
+          cart,
+          prevCart,
+          shop,
+          url: window.location.href || '',
+        });
       }}
     >
       Cart {count === null ? <span>&nbsp;</span> : count}
@@ -124,7 +157,10 @@ function CartBadge({ count }) {
   );
 }
 
-function CartToggle({ cart }) {
+/**
+ * @param {Pick<HeaderProps, 'cart'>}
+ */
+function CartToggle({cart}) {
   return (
     <Suspense fallback={<CartBadge count={null} />}>
       <Await resolve={cart}>
@@ -179,9 +215,28 @@ const FALLBACK_HEADER_MENU = {
   ],
 };
 
-function activeLinkStyle({ isActive, isPending }) {
+/**
+ * @param {{
+ *   isActive: boolean;
+ *   isPending: boolean;
+ * }}
+ */
+function activeLinkStyle({isActive, isPending}) {
   return {
     fontWeight: isActive ? 'bold' : undefined,
     color: isPending ? 'grey' : 'black',
   };
 }
+
+/** @typedef {'desktop' | 'mobile'} Viewport */
+/**
+ * @typedef {Object} HeaderProps
+ * @property {HeaderQuery} header
+ * @property {Promise<CartApiQueryFragment|null>} cart
+ * @property {Promise<boolean>} isLoggedIn
+ * @property {string} publicStoreDomain
+ */
+
+/** @typedef {import('@shopify/hydrogen').CartViewPayload} CartViewPayload */
+/** @typedef {import('storefrontapi.generated').HeaderQuery} HeaderQuery */
+/** @typedef {import('storefrontapi.generated').CartApiQueryFragment} CartApiQueryFragment */
