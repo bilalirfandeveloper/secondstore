@@ -13,7 +13,12 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
         <strong>{shop.name}</strong>
       </NavLink>
-      
+      <HeaderMenu
+        menu={menu}
+        viewport="desktop"
+        primaryDomainUrl={header.shop.primaryDomain.url}
+        publicStoreDomain={publicStoreDomain}
+      />
       <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
     </header>
   );
