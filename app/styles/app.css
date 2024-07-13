@@ -484,3 +484,65 @@ button.reset:hover:not(:has(> *)) {
 .account-logout {
   display: inline-block;
 }
+
+
+
+
+
+
+
+
+
+/* src/styles/Header.css */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.header-menu-desktop {
+  display: flex;
+  gap: 15px;
+}
+
+.header-menu-item {
+  text-decoration: none;
+  color: black;
+}
+
+.header-ctas {
+  display: flex;
+  gap: 10px;
+}
+
+.header-menu-mobile-toggle,
+.search__button,
+.reset__button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* src/styles/AnnouncementBar.css */
+.announcement-bar {
+  padding: 10px;
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: space-between;
+}
+
+.leftcolumnmenu,
+.middlesearchmenu,
+.rightcolumnmenu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.field__input {
+  padding: 5px;
+  font-size: 14px;
+}
+
+
