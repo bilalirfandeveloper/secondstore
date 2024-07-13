@@ -4,6 +4,7 @@ import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
 import {Header, HeaderMenu} from '~/components/Header';
 import {CartMain} from '~/components/CartMain';
+import AnnouncementBar from './components/AnnouncementBar';
 import {
   PredictiveSearchForm,
   PredictiveSearchResults,
@@ -116,6 +117,18 @@ function MobileMenuAside({header, publicStoreDomain}) {
     )
   );
 }
+
+function App({ header, settings, isLoggedIn, cart, publicStoreDomain }) {
+  return (
+    <>
+      <AnnouncementBar settings={settings} isLoggedIn={isLoggedIn} cart={cart} />
+      <Header header={header} isLoggedIn={isLoggedIn} cart={cart} publicStoreDomain={publicStoreDomain} />
+      {/* Other components and content */}
+    </>
+  );
+}
+
+
 
 /**
  * @typedef {Object} PageLayoutProps
