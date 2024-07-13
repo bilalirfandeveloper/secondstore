@@ -19,6 +19,8 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
         primaryDomainUrl={header.shop.primaryDomain.url}
         publicStoreDomain={publicStoreDomain}
       />
+
+      
       <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
     </header>
   );
