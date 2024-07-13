@@ -2,6 +2,12 @@ import {defer} from '@shopify/remix-oxygen';
 import {Await, useLoaderData, Link} from '@remix-run/react';
 import {Suspense} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
+import { redirect } from '@shopify/remix-oxygen';
+
+// Define your route handler function
+export function loader() {
+  // Implement a simple redirect from `/cart` to `/bag`
+  return redirect('/bag');
 
 /**
  * @type {MetaFunction}
